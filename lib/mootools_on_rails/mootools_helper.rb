@@ -442,8 +442,53 @@ module ActionView
         @controller.add_javascript(dom_ready(result))
         dom_ready(result)
       end
+      def add_autocompleter_json(id,url,options = {:post_var=>'search'})
+          dom_ready("new Autocompleter.Ajax.Json('#{id}', '#{url}', '#{options_for_autocompleter(options)}');")
+      end
+      
 
       protected
+      
+      def options_for_autocompleter(options)
+        js_options = {}
+
+        #url_options = options[:url]
+        #url_options = url_options.merge(:escape => false) if url_options.is_a?(Hash)
+
+        #AUTOCOMPLETER_OPTIONS= %w{minLength markQuery width maxChoices injectChoice 
+        #                          customChoices className zIndex delay observerOptions fxOptions
+        #                          onOver onSelect onSelection onShow onHide onBlur onFocus
+        #                          autoSubmit overflow overflowMargin selectFirst filter
+        #                          filterCase filterSubset forceSelect selectMode choicesMatch
+        #                          multiple separator separatorSplit autoTrim allowDupes
+        #                          cache relative postVar
+        #                          }  
+
+        #AUTOCOMPLETER_OPTIONS.each do |option|
+        #  js_options[option] = "#{options[option.underscore.to_sym]}" unless options[option.underscore.to_sym].blank?
+        #end
+        options.each_pair do |option,value|
+          js_options[Inflector::camelize(option.to_s,false)] = "#{value}"
+        end
+
+
+        # unless options[:form]
+        #   if protect_against_forgery?
+        #     if options[:protect]
+        #       js_options['protect'] = "#{options[:protect]} + '&' + "
+        #     else
+        #       js_options['protect'] = ""
+        #     end
+        #     js_options['protect'] << "encodeURIComponent(\"#{escape_javascript form_authenticity_token}\" )"
+        #   else
+        #     js_options['protect'] = "#{options[:protect]}" unless options[:protect].blank?
+        #   end
+        # end
+
+        options_for_javascript(js_options)
+      end
+
+      
       
       def options_for_ajax(options)
         # FIXME (Did): callbacks are different from Prototype ones: before, we had: js_options = build_callbacks(options)

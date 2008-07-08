@@ -1,12 +1,16 @@
 require 'mootools_on_rails/mootools_on_rails'
 require 'mootools_on_rails/mootools_helper'
+require 'mootools_on_rails/mootools_autocompleter_helper'
 
 # require the controller
 require 'controllers/unobtrusive_javascript_controller'
+require 'controllers/autocompleter_controller'
 
 # add methods to action controller base
 require 'mootools_on_rails/controller_methods'
+require 'mootools_on_rails/mootools_macros'
 ActionController::Base.send(:include, MootoolsOnRails::ControllerMethods)
+ActionController::Base.send(:include, ActionController::MootoolsMacros::AutoComplete)
 
 ActionView::Helpers::PrototypeHelper.instance_methods.each do |method|
   ActionView::Helpers::PrototypeHelper.send :remove_method, method
@@ -14,6 +18,7 @@ end
 
 ActionView::Base.class_eval do
   include ActionView::Helpers::MootoolsHelper
+  include ActionView::Helpers::MootoolsAutocompleterHelper
 end
 
 # hack to render rjs code within controller thru the following syntax "render :update do |page| ...."

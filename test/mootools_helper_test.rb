@@ -121,7 +121,6 @@ class MootoolsHelperTest < Test::Unit::TestCase
     assert_equal "document.fireEvent(\"success\");", 
       @generator.fire_event('success')
   end
-    
   
   protected
     def protect_against_forgery?
