@@ -443,7 +443,7 @@ module ActionView
         dom_ready(result)
       end
       def add_autocompleter_json(id,url,options = {:post_var=>'search'})
-          dom_ready("new Autocompleter.Ajax.Json('#{id}', '#{url}', '#{options_for_autocompleter(options)}');")
+          dom_ready("new Autocompleter.Ajax.Json('#{id}', '#{url}', #{options_for_autocompleter(options)});")
       end
       
 
@@ -468,7 +468,15 @@ module ActionView
         #  js_options[option] = "#{options[option.underscore.to_sym]}" unless options[option.underscore.to_sym].blank?
         #end
         options.each_pair do |option,value|
-          js_options[Inflector::camelize(option.to_s,false)] = "#{value}"
+          if value.class.name == "String" or value.class.name == "Symbol"
+            if value.lstrip[0..7]=="function"
+              js_options[Inflector::camelize(option.to_s,false)] = %&#{value}&
+            else
+              js_options[Inflector::camelize(option.to_s,false)] = %&"#{value}"&
+            end
+          else
+            js_options[Inflector::camelize(option.to_s,false)] = %&#{value}&
+          end
         end
 
 
