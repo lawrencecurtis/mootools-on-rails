@@ -34,12 +34,12 @@ class AssetTagHelperTest < Test::Unit::TestCase
 
   
   def test_javascript_include_tag_mootools
-    assert_equal %(<script src="/javascripts/mootools.js?1" type="text/javascript"></script>\n<script src="/behaviours/index.js?1" type="text/javascript"></script>),
+    assert_equal %(<script src="/javascripts/mootools-1.2-core.?1" type="text/javascript"></script>\n<script src="/behaviours/index.js?1" type="text/javascript"></script>),
       javascript_include_tag(:mootools)
   end
   
   def test_javascript_include_tag_default
-    assert_equal %(<script src="/javascripts/mootools.js?1" type="text/javascript"></script>\n<script src="/javascripts/mootools_patch.js?1" type="text/javascript"></script>\n<script src="/behaviours/index.js?1" type="text/javascript"></script>),
+    assert_equal %(<script src="/javascripts/mootools-1.2-core.js?1" type="text/javascript"></script>\n<script src="/behaviours/index.js?1" type="text/javascript"></script>),
       javascript_include_tag(:defaults)
   end
   

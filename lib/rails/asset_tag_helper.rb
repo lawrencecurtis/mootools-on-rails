@@ -1,7 +1,7 @@
 module ActionView::Helpers::AssetTagHelper
   alias_method :rails_javascript_include_tag, :javascript_include_tag
   
-  JAVASCRIPT_DEFAULT_SOURCES = ['mootools', 'mootools_patch']
+  JAVASCRIPT_DEFAULT_SOURCES = ['mootools-1.2-core']
   @@javascript_default_sources = JAVASCRIPT_DEFAULT_SOURCES.dup
     
   def javascript_include_tag(*sources)
@@ -10,7 +10,7 @@ module ActionView::Helpers::AssetTagHelper
        ['mootools', behaviours_url]
      ).uniq
    elsif sources.delete :defaults
-     sources = ['mootools', 'mootools_patch', behaviours_url].concat(sources)
+     sources = ['mootools-1.2-core.', behaviours_url].concat(sources)
    end
 
    
