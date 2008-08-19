@@ -19,50 +19,36 @@ module ActionView
       #
       # autocomplete_with_associated_field(:invoice,:customer_id,:customer,:name,{},{})
       #
-      def autocomplete_with_associated_tag(object,method,source_object,source_method,value=nil,options={},autocomplete_options={})
-        name ||= "autocomplete_for_#{object}_#{method}"
-        options.merge!(:id=>name)
+      # Is a drop down replacement, but with autocomplete, this mean you will get
+      # a field object[method_id] with the associated id of the autocompleted text.
+      # associated_object (for belongs_to)
+      def autocomplete_with_associated_tag(object,method,associated_object,associated_method,value=nil,options={},autocomplete_options={})
         autocomplete_options.merge!(:hidden_name=>"#{object}[#{method}]",
           :force_select=>true,
           :inject_choice=>INJECT_CHOICE,
           :on_show=>ON_SHOW_HIDE
           )
-        javascript_tag(add_autocompleter_json("autocomplete_for_#{object}_#{method}",
-                        "/autocompleter/#{source_object}/#{source_method}",
-                        autocomplete_options)
-                        ).concat(text_field_tag(name,value,options))
+          autocomplete_any(object,method,associated_object,associated_method,autocomplete_options,value,options)
       end
       #
-      # autocomplete_with_associated_field(:invoice,:customer_id,:customer,:name,{},{})
+      # autocomplete_multiple_with_associated_field(:invoice,:customer_id,:customer,:name,{},{})
+      # alias for has_many ;-)
       #
-      def autocomplete_with_associated_field(object,method,source_object,source_method,value=nil,options={},autocomplete_options={})
-        name ||= "autocomplete_for_#{object}_#{method}"
-        options.merge!(:id=>name)
-        
-        autocomplete_options.merge!(:hidden_name=>"#{object}[#{method}]",
-          :force_select=>true,
-          :inject_choice=>INJECT_CHOICE,
-          :on_show=>ON_SHOW_HIDE
-          )
-        javascript_tag(add_autocompleter_json("autocomplete_for_#{object}_#{method}",
-                        "/autocompleter/#{source_object}/#{source_method}",
-                        autocomplete_options)
-                        ).concat(text_field_tag(name,value,options))
-      end
-      #
-      # autocomplete_with_associated_field(:invoice,:customer_id,:customer,:name,{},{})
-      #
-      def autocomplete_multiple_with_associated_tag(object,method,source_object,source_method,value=nil,options={},autocomplete_options={})
-        name ||= "autocomplete_for_#{object}_#{method}"
-        options.merge!(:id=>name)
+      def autocomplete_multiple_with_associated_tag(object,method,associated_object,associated_method,value=nil,options={},autocomplete_options={})
         autocomplete_options.merge!(:hidden_name=>"#{object}[#{method}]",
           :multiple=>true,
           :inject_choice=>INJECT_CHOICE
           )
+        autocomplete_any(object,method,associated_object,associated_method,autocomplete_options,value,options)
+      end
+      private
+      def autocomplete_any(object,method,associated_object,associated_method,autocomplete_options,value,options)
+        field_name ||= "autocomplete_for_#{object}_#{method}"
+        options.merge!(:id=>field_name)
         javascript_tag(add_autocompleter_json("autocomplete_for_#{object}_#{method}",
-                        "/autocompleter/#{source_object}/#{source_method}",
+                        "/autocompleter/#{associated_object}/#{associated_method}",
                         autocomplete_options)
-                        ).concat(text_field_tag(name,value,options))
+                        ).concat(text_field_tag(field_name,value,options))
       end
     end
   end
