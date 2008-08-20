@@ -3,8 +3,8 @@ class AutocompleterController < ActionController::Base
       object = params[:object]
       method = params[:method]
       if ActionController::Base.autocompleters.key?("#{object}_#{method}")
-        
-        options = ActionController::Base.autocompleters["#{object}_#{method}"]
+        options = {}
+        options.merge!(ActionController::Base.autocompleters["#{object}_#{method}"])
         if options[:conditions]
           if options[:conditions].kind_of?(Proc)
              options[:conditions] = options[:conditions].call(params)
