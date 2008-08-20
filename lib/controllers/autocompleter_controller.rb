@@ -17,7 +17,7 @@ class AutocompleterController < ActionController::Base
     
         @items = object.to_s.camelize.constantize.find(:all, find_options)
 
-        render :json => @items.collect{|i| [i.send(:method),"#{i.id}"]}
+        render :json => @items.collect{|i| [i.send(method.to_sym),"#{i.id}"]}
       else
         render :text=>"no autocompleter. Check if added to the correct controller the sentence :autocomplete_for :object,:method"
       end
