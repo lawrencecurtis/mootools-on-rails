@@ -19,7 +19,7 @@ class AutocompleterController < ActionController::Base
 
         render :json => @items.collect{|i| [i[method],"#{i.id}"]}
       else
-        render :text=>"no autocompleter"
+        render :text=>"no autocompleter. Check if added to the correct controller the sentence :autocomplete_for :object,:method"
       end
   end
 end
