@@ -3,7 +3,13 @@ class AutocompleterController < ActionController::Base
       object = params[:object]
       method = params[:method]
       if ActionController::Base.autocompleters.key?("#{object}_#{method}")
-        options = {}
+        
+        options = ActionController::Base.autocompleters["#{object}_#{method}"]
+        if options[:conditions]
+          if options[:conditions].kind_of?(Proc)
+             options[:conditions] = options[:conditions].call(params)
+          end
+        end
         find_options = { 
           :conditions => [ "LOWER(#{method}) LIKE ?", '%' + params[:value].downcase + '%' ], 
           :order => "#{method} ASC",
