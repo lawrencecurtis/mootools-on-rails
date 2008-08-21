@@ -434,6 +434,14 @@ module ActionView
         js
       end
 
+      def inline_add_event(id, event, script=nil, &block)
+        result = id.is_a?(Symbol) ? id.to_s : "$('#{id}')"
+        result << ".addEvent('#{event}', function() {\n"
+        result << (block_given? ? JavaScriptGenerator.new(@template, &block).to_s : script)
+        result << "\n})"
+        dom_ready(result)
+      end
+
       def add_event(id, event, script=nil, &block)
         result = id.is_a?(Symbol) ? id.to_s : "$('#{id}')"
         result << ".addEvent('#{event}', function() {\n"
