@@ -57,7 +57,7 @@ Autocompleter.Base = new Class({
 
     /* addded lazy attribute to hold hidden ids */
 		hiddenName: '',
-		hidden: null
+		hidden: ''
 	},
 
 	initialize: function(element, options) {
@@ -94,7 +94,13 @@ Autocompleter.Base = new Class({
         })
         this.hidden_multiple.adopt(new Element('options')).inject(this.element,'after');
         this.hidden_multiple.setStyle('display', 'none');
-  			
+        var multiple = this.hidden_multiple;
+        if (this.options.hidden.trim()!= "") {
+          this.options.hidden.split(",").each(function(el) {
+            var option = new Element('option',{'value':el,'selected':'selected'})
+            option.inject(multiple);
+          });
+        }
 		  } else {
   			this.hidden  = new Element('input', {
   				'name' : this.options.hiddenName,

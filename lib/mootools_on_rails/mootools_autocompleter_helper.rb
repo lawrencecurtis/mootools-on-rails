@@ -36,6 +36,7 @@ module ActionView
       #
       def autocomplete_multiple_with_associated_tag(object,method,associated_object,associated_method,value=nil,options={},autocomplete_options={})
         autocomplete_options.merge!(:hidden_name=>"#{object}[#{method}][]",
+          :hidden=>"#{options[:selected]}",
           :multiple=>true,
           :inject_choice=>INJECT_CHOICE
           )
