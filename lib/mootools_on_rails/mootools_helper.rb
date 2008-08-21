@@ -128,7 +128,14 @@ module ActionView
      #     { :update => "posts", :url => { :action => "destroy", :id => post.id } },
      #     :href => url_for(:action => "destroy", :id => post.id)
      def link_to_remote(name, options = {}, html_options = nil)  
-       link_to_function(name, remote_function(options), html_options || options.delete(:html))
+       id = "#{name.downcase.gsub(/\ /,"")[0..9]}#{Time.now.to_f.to_s.gsub(/\./,"")}"
+       link_options = {:id=>id}
+       received_options = html_options || options.delete(:html)
+       link_options.merge!(received_options) if  received_options
+       result = ""
+       result << link_to(name, "#", link_options)
+       result << javascript_tag(inline_add_event(link_options[:id],'click',remote_function(options)))
+       result
      end
 
      # Creates a form that will submit using XMLHttpRequest in the background 
@@ -404,12 +411,11 @@ module ActionView
 
         request_type = options[:request_type].blank? ? "" : ".#{options[:request_type].to_s.upcase}"
 
-        function = "new Request#{request_type}(#{javascript_options}).send()"
+        function = "new Request#{request_type}(#{javascript_options}).send(); return false;"
         function = "#{options[:before]}; #{function}" if options[:before]
         function = "#{function}; #{options[:after]}"  if options[:after]
         function = "if (#{options[:condition]}) { #{function}; }" if options[:condition]
         function = "if (confirm('#{escape_javascript(options[:confirm])}')) { #{function}; }" if options[:confirm]
-
         return function
       end
 
