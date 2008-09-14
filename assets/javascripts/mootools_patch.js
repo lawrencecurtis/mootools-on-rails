@@ -46,7 +46,8 @@ String.implement({
   while (source.length > 0) {
     if (match = source.match(pattern)) {
       result += source.slice(0, match.index);
-      result += String.interpret(replacement(match));
+      replacement_result = replacement(match);
+      result += (replacement_result == null) ? '': String(replacement_result);
       source  = source.slice(match.index + match[0].length);
     } else {
       result += source, source = '';
@@ -54,7 +55,7 @@ String.implement({
   }
   return result;},
   interpret: function(value) {
-    return value == null ? '' : String(value);
+    return value == null ? '' : (String(value));
   },
   specialChar: {
     '\b': '\\b',
@@ -101,14 +102,13 @@ var Template = new Class({
         expr = expr.substring('[' == match[3] ? match[1].length : match[0].length);
         match = pattern.exec(expr);
       }
-      return before + (ctx == null) ? '' : String(ctx);
+      return before + ((ctx == null) ? '' : String(ctx));
     }.bind(this));
+    return this;
   }
 });
 
 Template.Pattern = /(^|.|\r|\n)(#\{(.*?)\})/;
-
-//Hash.prototype.toTemplateReplacements = Hash.prototype.toObject;
 
 function testTemplate(template_string,object) {
   var template = new Template(template_string);

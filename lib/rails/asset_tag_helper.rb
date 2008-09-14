@@ -7,10 +7,10 @@ module ActionView::Helpers::AssetTagHelper
   def javascript_include_tag(*sources)
    if sources.delete :mootools
      sources = sources.concat(
-       ['mootools-1.2-core', 'mootools-1.2-more', 'application', behaviours_url]
+       ['mootools-1.2-core', 'mootools-1.2-more', 'application']
      ).uniq
    elsif sources.delete :defaults
-     sources = ['mootools-1.2-core', 'mootools-1.2-more', 'mootools_patch', 'application', behaviours_url].concat(sources)
+     sources = ['mootools-1.2-core', 'mootools-1.2-more', 'mootools_patch', 'application'].concat(sources)
    end
 
    
