@@ -1,10 +1,12 @@
 require 'mootools_on_rails/mootools_on_rails'
 require 'mootools_on_rails/mootools_helper'
 require 'mootools_on_rails/mootools_autocompleter_helper'
+require 'mootools_on_rails/mootools_sortable_helper'
 
 # require the controller
 # require 'controllers/unobtrusive_javascript_controller'
 require 'controllers/autocompleter_controller'
+require 'controllers/sortable_controller'
 
 # add methods to action controller base
 require 'mootools_on_rails/controller_methods'
@@ -19,6 +21,7 @@ end
 ActionView::Base.class_eval do
   include ActionView::Helpers::MootoolsHelper
   include ActionView::Helpers::MootoolsAutocompleterHelper
+  include ActionView::Helpers::MootoolsSortableHelper
 end
 
 # hack to render rjs code within controller thru the following syntax "render :update do |page| ...."
