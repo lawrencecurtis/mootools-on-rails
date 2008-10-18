@@ -1,10 +1,9 @@
 class SortableController < ActionController::Base
   def index
       object = params[:object]
-      debugger
       actual_order = params[:order].split(",").collect { |item| (item.split("_")).last}
       if ActionController::Base.sortables.key?("#{object}")
-        options = {:collection=>:find}
+        options = {:collection=>:all}
         options.merge!(ActionController::Base.sortables["#{object}"])
         
         klass = object.to_s.camelize.constantize

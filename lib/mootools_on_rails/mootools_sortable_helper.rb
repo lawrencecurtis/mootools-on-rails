@@ -25,8 +25,8 @@ module ActionView
           snap: #{sortable_options[:snap]},
           revert: {duration:#{sortable_options[:revert][:duration]}},
           onComplete: function(el) {
-            changes='order='+sortable.serialize(0);
-            var myRequest = new Request({url: '#{sortable_options[:url]}'}).send(changes);
+            changes='_method=put&order='+sortable.serialize(0);
+            var myRequest = new Request({url: '#{sortable_options[:url]}',method: 'post'}).send(changes);
             el.highlight('#{sortable_options[:higlight_color]}');
           	}}
           );"
